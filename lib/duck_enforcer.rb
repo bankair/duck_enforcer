@@ -25,13 +25,15 @@ class DuckEnforcer
   end
 end
 
-# Add the Class.quack_like_a! helper method
+# Add the Class.quacks_like_a! helper method
 class Class
-  def quacks_like_a!(klass)
-    unless klass.ancestors.include? DuckEnforcer
-      raise(ArgumentError, "#{klass.inspect} is not a DuckEnforcer")
+  def quacks_like_a!(*args)
+    Array(args).each do |klass|
+      unless klass.ancestors.include? DuckEnforcer
+        raise(ArgumentError, "#{klass.inspect} is not a DuckEnforcer")
+      end
+      klass.check_conformity!(self)
     end
-    klass.check_conformity!(self)
   end
 end
 
